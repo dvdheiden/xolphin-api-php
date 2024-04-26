@@ -125,7 +125,7 @@ class Client
             );
 
             return json_decode(
-                $result->getBody()->getContents()
+                (string)$result->getBody()
             );
 
         } catch (RequestException $e) {
@@ -167,7 +167,7 @@ class Client
             );
 
             return json_decode(
-                $result->getBody()->getContents()
+                (string)$result->getBody()
             );
         } catch (RequestException $e) {
             throw XolphinRequestException::createFromRequestException($e);
@@ -190,7 +190,7 @@ class Client
                 (int) $result->getHeader('X-RateLimit-Remaining')[0]
             );
 
-            return $result->getBody();
+            return $result->getBody()->rewind();
         } catch (RequestException $e) {
             throw XolphinRequestException::createFromRequestException($e);
         }
