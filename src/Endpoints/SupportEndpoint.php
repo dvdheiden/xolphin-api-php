@@ -52,15 +52,15 @@ class SupportEndpoint
      * @return array
      * @throws XolphinRequestException|GuzzleException
      */
-    public function products(): array
+    public function products(int $limit = 20): array
     {
         $products = [];
 
-        $result = new Products($this->client->get('products', ['page' => 1]));
+        $result = new Products($this->client->get('products', ['page' => 1, 'limit' => $limit]));
         if (!$result->isError()) {
             $products = $result->products;
             while ($result->getPagination()->getPage() < $result->getPagination()->getPages()) {
-                $result = new Products($this->client->get('products', ['page' => $result->getPagination()->getPage() + 1]));
+                $result = new Products($this->client->get('products', ['page' => $result->getPagination()->getPage() + 1, 'limit' => $limit]));
 
                 if ($result->isError()) {
                     break;

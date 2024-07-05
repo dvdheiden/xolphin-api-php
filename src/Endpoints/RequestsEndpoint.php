@@ -37,15 +37,15 @@ class RequestsEndpoint
      * @throws XolphinRequestException
      * @throws Exception|GuzzleException
      */
-    public function all(): array
+    public function all(int $limit = 20): array
     {
         $requests = [];
 
-        $result = new Requests($this->client->get('requests', ['page' => 1]));
+        $result = new Requests($this->client->get('requests', ['page' => 1, 'limit' => $limit]));
         if (!$result->isError()) {
             $requests = $result->requests;
             while ($result->getPagination()->getPage() < $result->getPagination()->getPages()) {
-                $result = new Requests($this->client->get('requests', ['page' => $result->getPagination()->getPage() + 1]));
+                $result = new Requests($this->client->get('requests', ['page' => $result->getPagination()->getPage() + 1, 'limit' => $limit]));
 
                 if ($result->isError()) {
                     break;

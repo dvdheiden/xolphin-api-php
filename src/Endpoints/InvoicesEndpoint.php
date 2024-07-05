@@ -33,15 +33,15 @@ class InvoicesEndpoint
      * @throws XolphinRequestException
      * @throws Exception|GuzzleException
      */
-    public function all(): array
+    public function all(int $limit = 20): array
     {
         $invoices = [];
 
-        $result = new Invoices($this->client->get('invoices', ['page' => 1]));
+        $result = new Invoices($this->client->get('invoices', ['page' => 1, 'limit' => $limit]));
         if (!$result->isError()) {
             $invoices = $result->invoices;
             while ($result->getPagination()->getPage() < $result->getPagination()->getPages()) {
-                $result = new Invoices($this->client->get('invoices', ['page' => $result->getPagination()->getPage() + 1]));
+                $result = new Invoices($this->client->get('invoices', ['page' => $result->getPagination()->getPage() + 1, 'limit' => $limit]));
 
                 if ($result->isError()) {
                     break;
