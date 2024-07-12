@@ -190,7 +190,10 @@ class Client
                 (int) $result->getHeader('X-RateLimit-Remaining')[0]
             );
 
-            return $result->getBody()->rewind();
+            $body = $result->getBody();
+            $body->rewind();
+
+            return $body;
         } catch (RequestException $e) {
             throw XolphinRequestException::createFromRequestException($e);
         }
